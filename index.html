@@ -211,19 +211,26 @@ nav button{transition:background .2s,color .2s}
 @keyframes sup{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 .nft.sm .n3{animation:none;transform:rotateY(-12deg)}
 .nft,.nc{contain:layout paint}
+
+/* ===== лого и админка ===== */
+.logo{background:none!important;box-shadow:none!important;width:44px;height:44px;border-radius:13px;overflow:hidden}
+.lring{background:none!important;box-shadow:0 10px 40px #f9152155!important;border-radius:20px!important;overflow:hidden}
+.brand{text-shadow:none!important;background:linear-gradient(90deg,#fff,#ff8d96);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.8px}
+#sh{max-height:86vh;overflow-y:auto}
+#au textarea{width:100%;min-height:90px;box-sizing:border-box;background:var(--c2);color:inherit;border:1px solid #ffffff22;border-radius:12px;padding:10px;font:inherit}
 </style></head><body>
 <div class="hd">
- <div class="logo" onclick="openLaunch()" style="cursor:pointer"><span style="font-size:26px">🐻</span></div>
+ <div class="logo" onclick="openLaunch()" style="cursor:pointer"><svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><defs><linearGradient id="lga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4757"/><stop offset="1" stop-color="#b0111f"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#lga)"/><circle cx="14" cy="14" r="5.5" fill="#fff"/><circle cx="34" cy="14" r="5.5" fill="#fff"/><circle cx="24" cy="26" r="13" fill="#fff"/><circle cx="19" cy="23.5" r="1.9" fill="#1a0b0d"/><circle cx="29" cy="23.5" r="1.9" fill="#1a0b0d"/><path d="M19.5 32.5 24 27.5 28.5 32.5" fill="none" stroke="#d4202f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
  <div class="brand">BearUp</div>
  <div class="pill"><span id="bal">0</span><small>зв.</small><button class="plus" onclick="topup()">+</button></div>
- <button class="hist" onclick="openHist()">история</button>
+ <button class="hist" onclick="openHist()">история</button><button class="hist" id="admb" style="display:none" onclick="admOpen()">⚙</button>
 </div>
 <div id="view"></div>
 <nav id="nav"></nav>
 <div class="sheet" id="sheet" onclick="if(event.target==this)this.classList.remove('show')"><div id="sh"></div></div>
 <div class="toast" id="toast"></div>
 <div id="launch"><div class="orb o1"></div><div class="orb o2"></div><div class="lc">
-<div class="lring"><span style="font-size:46px">🐻</span></div>
+<div class="lring"><svg viewBox="0 0 48 48" width="72" height="72" aria-hidden="true"><defs><linearGradient id="lgb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4757"/><stop offset="1" stop-color="#b0111f"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#lgb)"/><circle cx="14" cy="14" r="5.5" fill="#fff"/><circle cx="34" cy="14" r="5.5" fill="#fff"/><circle cx="24" cy="26" r="13" fill="#fff"/><circle cx="19" cy="23.5" r="1.9" fill="#1a0b0d"/><circle cx="29" cy="23.5" r="1.9" fill="#1a0b0d"/><path d="M19.5 32.5 24 27.5 28.5 32.5" fill="none" stroke="#d4202f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 <h1>BearUp</h1><div class="lsub">NFT-подарки · апгрейды · мины · краш</div>
 <div class="lshow" id="lshow"></div>
 <button class="go" onclick="startApp()">▶ Играть</button>
@@ -242,8 +249,9 @@ const tg=()=>window.Telegram&&Telegram.WebApp;
 const INIT=()=>(tg()&&tg().initData)||new URLSearchParams(location.hash.slice(1)).get('tgWebAppData')||'';
 async function api(p,b){try{const r=await fetch('/api/'+p,{method:b?'POST':'GET',headers:{'X-Init-Data':INIT(),'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return await r.json()}catch(e){return {error:'Нет связи с сервером'}}}
 async function loadState(){const d=await api('state');if(d.error){toast(d.error);return}
- Object.assign(S,{bal:d.balance,wag:d.wag,ups:d.ups,wins:d.wins,best:d.best,nft:d.nft,id:d.id,name:d.name});
+ Object.assign(S,{admin:!!d.admin,bal:d.balance,wag:d.wag,ups:d.ups,wins:d.wins,best:d.best,nft:d.nft,id:d.id,name:d.name});
  if(d.mines)Object.assign(MN,{on:true,m:d.mines.m,bet:d.mines.bet,n:d.mines.open.length,mines:[],open:d.mines.open,last:-1,res:''});
+ {const ab=$('admb');if(ab)ab.style.display=S.admin?'':'none'}
  setBal()}
 let mbusy=false;
 let bet=0,X=3,busy=false,ang=0,page='games',period='week';
@@ -258,6 +266,24 @@ async function doDeposit(){const d=await api('deposit',{amount:+$('dpa').value})
   if(tg()&&tg().openInvoice){$('sheet').classList.remove('show');tg().openInvoice(d.link,async st=>{if(st=='paid'){toast('Оплачено, зачисляем…');await wait(1500);await loadState();view()}else if(st!='cancelled')toast('Оплата: '+st)})}
   else{$('sheet').classList.remove('show');window.open(d.link,'_blank')}
  }catch(e){toast('Ошибка оплаты: '+(e&&e.message||e))}}
+let AU=0;
+async function admOpen(){const s=await api('admin/stats');if(s.error)return toast(s.error);
+shOpen(`<div class="lbl">⚙ Админка</div><div class="mu" style="font-size:13px;line-height:1.7;margin:6px 0 12px">Игроков: <b>${fmt(s.users)}</b> · онлайн (5 мин): <b>${s.online}</b> · новых за 24ч: <b>${s.new24}</b><br>Ставок за 24ч: <b>${fmt(s.wag24)}</b> ★ · Долг игрокам: <b>${fmt(s.debt)}</b> ★<br>Баланс бота: <b>${s.bot==null?'—':fmt(s.bot)}</b> ★ · Выводов в ожидании: <b>${s.pend}</b> · Заявок на NFT: <b>${s.nftreq}</b></div>
+<div class="inp"><input id="aq" placeholder="ID или @username"><span>👤</span></div><button class="go" onclick="admFind()">найти игрока</button><div id="au"></div>
+<div class="two" style="margin-top:10px"><button onclick="admNftReq()">заявки на NFT</button><button onclick="admBc()">рассылка</button></div>`)}
+async function admFind(){const d=await api('admin/user',{q:$('aq').value});if(d.error)return toast(d.error);const u=d.user;AU=u.id;
+$('au').innerHTML=`<div class="card" style="margin:10px 0"><div><b>${esc(u.name)}</b> · ${u.id}${u.banned?' · 🚫 бан':''}</div><div class="mu" style="font-size:13px;line-height:1.5">Баланс ${fmt(u.balance)} ★ · ставки ${fmt(u.wag)} · NFT ${u.nft} · апгрейдов ${u.ups} · лучший ${fmt(u.best)}</div>
+<div class="inp" style="margin-top:8px"><input id="aam" type="number" inputmode="numeric" placeholder="+100 или -100"><span>★</span></div>
+<div class="two"><button onclick="admBal()">изменить баланс</button><button onclick="admBan(${u.banned?0:1})">${u.banned?'разбанить':'забанить'}</button></div>
+<div class="inp" style="margin-top:8px"><input id="anf" placeholder="название NFT"><span>🎁</span></div><button onclick="admGive()">выдать NFT</button></div>`}
+async function admBal(){const d=await api('admin/balance',{id:AU,amount:+$('aam').value});if(d.error)return toast(d.error);toast('Баланс: '+fmt(d.balance));admFind()}
+async function admBan(on){const d=await api('admin/ban',{id:AU,on});if(d.error)return toast(d.error);toast(on?'Забанен':'Разбанен');admFind()}
+async function admGive(){const d=await api('admin/givenft',{id:AU,name:$('anf').value});if(d.error)return toast(d.error);toast('Выдан: '+d.name);admFind()}
+async function admNftReq(){const d=await api('admin/nftreq');if(d.error)return toast(d.error);
+$('au').innerHTML=d.items.length?d.items.map(x=>`<div class="card" style="margin:8px 0"><div><b>${esc(x.title)}</b></div><div class="mu" style="font-size:13px">@${esc(x.name)} · ${x.uid}</div><button onclick="admDone(${x.id})">отправлено игроку</button></div>`).join(''):'<div class="mu" style="margin:12px 0">Заявок нет</div>'}
+async function admDone(id){const d=await api('admin/nftdone',{id});if(d.error)return toast(d.error);admNftReq()}
+function admBc(){$('au').innerHTML=`<div style="margin:10px 0"><textarea id="abt" placeholder="Текст рассылки всем игрокам"></textarea><button class="go" onclick="admSend()">отправить всем</button></div>`}
+async function admSend(){const t=$('abt').value;if(!t.trim())return toast('Введите текст');if(!confirm('Отправить всем игрокам?'))return;const d=await api('admin/broadcast',{text:t});if(d.error)return toast(d.error);toast('Отправляется: '+d.count+' чел.');$('au').innerHTML=''}
 function wdSheet(){shOpen(`<div class="lbl">↗ Вывод</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Звёзды придут на ваш аккаунт StaticGram. Доступно: ${fmt(S.bal)} ★</div>
 <div class="inp"><input id="wda" type="number" inputmode="numeric" value="${Math.max(1,Math.min(S.bal,100))}"><span>звёзд</span></div>
 <div class="chips"><button onclick="$('wda').value=${S.bal}">всё</button></div>
@@ -336,7 +362,7 @@ function vInv(){
  $('view').innerHTML=`<div class="row" style="margin:14px 0 8px"><h2 style="margin:0">🎒 Инвентарь</h2><span style="display:flex;gap:6px"><button class="sm" onclick="market()">🛍 Маркет</button><button class="sm" onclick="depNft()">＋ NFT</button></span></div>`+
  (S.nft.length?`<div class="ng">${S.nft.map(card).join('')}</div>`:`<div class="empty">🎁<br>Пусто. Купите NFT на маркете или пополните через «＋ NFT».</div>`)}
 function shOpen(h){$('sh').innerHTML=h;$('sheet').classList.add('show')}
-function depNft(){shOpen(`<div class="lbl">🎁 Пополнение NFT-подарком</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Автоприём NFT пока недоступен. Отправьте NFT-подарок админу казино и напишите ему свой ID: он зачислит подарок в инвентарь.</div>
+function depNft(){shOpen(`<div class="lbl">🎁 Пополнение NFT-подарком</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Автоприём NFT пока недоступен. Отправьте NFT-подарок <b>@PavelManager</b> или <b>@Huevo</b> и напишите им свой ID: подарок зачислят в инвентарь.</div>
 <div class="prize" style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div class="mu" style="font-size:11px;letter-spacing:.12em">ВАШ ID</div><div class="lbl">${S.id}</div></div><button class="sm" onclick="navigator.clipboard&&navigator.clipboard.writeText('${S.id}').then(()=>toast('Скопировано'),()=>toast('${S.id}'))">Копировать</button></div>
 <div class="mu" style="font-size:12px;line-height:1.4;margin:4px 2px 10px">Принимаются только NFT (улучшенные) подарки. Вывести NFT обратно или продать его за ★ можно в инвентаре.</div>
 <div class="two"><button onclick="$('sheet').classList.remove('show');page='inv';view()">🎒 Инвентарь</button><button onclick="$('sheet').classList.remove('show')">закрыть</button></div>`)}

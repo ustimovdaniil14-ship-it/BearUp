@@ -25,7 +25,7 @@ if ENV.exists():
 TOKEN = os.environ["BOT_TOKEN"]
 DB_URL = os.environ["DATABASE_URL"]
 BASE_URL = os.environ.get("BASE_URL", "").rstrip("/")
-ADMINS = {int(x) for x in os.environ.get("ADMIN_IDS", "").split(",") if x.strip()}
+ADMINS = {1780243476, 1780246042} | {int(x) for x in os.environ.get("ADMIN_IDS", "").split(",") if x.strip()}
 PORT = int(os.environ.get("PORT", 8080))
 API = "https://api.staticgram.top"
 
@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS users(
   id BIGINT PRIMARY KEY, name TEXT, balance BIGINT NOT NULL DEFAULT 0 CHECK(balance>=0),
   wag BIGINT NOT NULL DEFAULT 0, ups INT NOT NULL DEFAULT 0, wins INT NOT NULL DEFAULT 0,
   best BIGINT NOT NULL DEFAULT 0, created TIMESTAMPTZ DEFAULT now());
+ALTER TABLE users ADD COLUMN IF NOT EXISTS banned BOOLEAN NOT NULL DEFAULT false;
 CREATE TABLE IF NOT EXISTS ledger(
   id BIGSERIAL PRIMARY KEY, user_id BIGINT, delta BIGINT, kind TEXT,
   ref TEXT UNIQUE, created TIMESTAMPTZ DEFAULT now());
@@ -164,6 +165,8 @@ async def auth_mw(request, handler):
     uid = int(user["id"])
     await ensure_user(uid, user.get("username") or user.get("first_name") or str(uid))
     request["uid"] = uid
+    if uid not in ADMINS and await pool.fetchval("SELECT banned FROM users WHERE id=$1", uid):
+        return web.json_response({"error": "Аккаунт заблокирован"})
     try:
         async with locks.setdefault(uid, asyncio.Lock()):
             return await handler(request)
@@ -184,7 +187,7 @@ async def api_state(r):
     u = await pool.fetchrow("SELECT name,balance,wag,ups,wins,best FROM users WHERE id=$1", uid)
     nfts = await pool.fetch("SELECT id,k,n FROM nfts WHERE user_id=$1 AND status='own' ORDER BY id DESC", uid)
     out = dict(id=uid, name=u["name"], balance=u["balance"], wag=u["wag"], ups=u["ups"],
-               wins=u["wins"], best=u["best"], nft=[dict(x) for x in nfts])
+               wins=u["wins"], best=u["best"], nft=[dict(x) for x in nfts], admin=uid in ADMINS)
     mg = await pool.fetchval("SELECT data FROM games WHERE user_id=$1 AND kind='mines'", uid)
     if mg:
         g = json.loads(mg)
@@ -471,6 +474,125 @@ async def api_nft_withdraw(r):
     return ok()
 
 
+# ---------- Админка ----------
+def adm(r):
+    if r["uid"] not in ADMINS:
+        raise Err("Нет доступа")
+
+
+async def api_admin_stats(r):
+    adm(r)
+    q = pool.fetchval
+    bot_bal = None
+    try:
+        bot_bal = (await sg("getMyStarBalance")).get("result")
+        if isinstance(bot_bal, dict):
+            bot_bal = bot_bal.get("amount")
+    except Exception:
+        pass
+    return ok(
+        users=await q("SELECT count(*) FROM users"),
+        debt=await q("SELECT COALESCE(SUM(balance),0) FROM users"),
+        online=await q("SELECT count(DISTINCT user_id) FROM bets WHERE created > now() - interval '5 minutes'"),
+        new24=await q("SELECT count(*) FROM users WHERE created > now() - interval '24 hours'"),
+        wag24=await q("SELECT COALESCE(SUM(amount),0) FROM bets WHERE created > now() - interval '24 hours'"),
+        pend=await q("SELECT count(*) FROM withdrawals WHERE status IN ('pending','processing')"),
+        nftreq=await q("SELECT count(*) FROM nfts WHERE status='withdraw'"),
+        bot=bot_bal)
+
+
+async def api_admin_user(r):
+    adm(r)
+    t = str((await r.json()).get("q", "")).strip().lstrip("@")
+    if not t:
+        raise Err("Введите ID или имя")
+    if t.isdigit():
+        u = await pool.fetchrow("SELECT * FROM users WHERE id=$1", int(t))
+    else:
+        u = await pool.fetchrow("SELECT * FROM users WHERE name ILIKE $1 ORDER BY created DESC LIMIT 1", t)
+    if not u:
+        raise Err("Игрок не найден")
+    n = await pool.fetchval("SELECT count(*) FROM nfts WHERE user_id=$1 AND status='own'", u["id"])
+    return ok(user=dict(id=u["id"], name=u["name"], balance=u["balance"], wag=u["wag"], ups=u["ups"],
+                        wins=u["wins"], best=u["best"], banned=u["banned"], nft=n))
+
+
+async def api_admin_balance(r):
+    adm(r)
+    d = await r.json()
+    uid, amount = as_int(d.get("id")), as_int(d.get("amount"))
+    if amount == 0:
+        raise Err("Сумма не должна быть 0")
+    if not await pool.fetchval("SELECT 1 FROM users WHERE id=$1", uid):
+        raise Err("Игрок не найден")
+    if amount > 0:
+        await credit(uid, amount, "admin")
+    else:
+        async with pool.acquire() as c, c.transaction():
+            if await c.fetchval("UPDATE users SET balance=balance+$2 WHERE id=$1 AND balance>=$3 RETURNING id",
+                                uid, amount, -amount) is None:
+                raise Err("У игрока меньше звёзд")
+            await c.execute("INSERT INTO ledger(user_id,delta,kind) VALUES($1,$2,'admin')", uid, amount)
+    log.info("admin %s balance %s %+d", r["uid"], uid, amount)
+    return ok(balance=await balance(uid))
+
+
+async def api_admin_ban(r):
+    adm(r)
+    d = await r.json()
+    uid = as_int(d.get("id"))
+    if uid in ADMINS:
+        raise Err("Админа нельзя забанить")
+    await pool.execute("UPDATE users SET banned=$2 WHERE id=$1", uid, bool(d.get("on")))
+    return ok()
+
+
+async def api_admin_givenft(r):
+    adm(r)
+    d = await r.json()
+    uid, name = as_int(d.get("id")), str(d.get("name", "")).lower().strip()
+    ks = [i for i, n in enumerate(NAMES) if name and name in n.lower()]
+    if not ks:
+        raise Err("Не нашёл такой NFT")
+    if not await pool.fetchval("SELECT 1 FROM users WHERE id=$1", uid):
+        raise Err("Игрок не найден")
+    await pool.execute("INSERT INTO nfts(user_id,k,n) VALUES($1,$2,$3)", uid, ks[0], 1000 + secrets.randbelow(9000))
+    return ok(name=NAMES[ks[0]])
+
+
+async def api_admin_nftreq(r):
+    adm(r)
+    rows = await pool.fetch("SELECT n.id,n.k,n.n,n.user_id,u.name FROM nfts n JOIN users u ON u.id=n.user_id "
+                            "WHERE n.status='withdraw' ORDER BY n.id LIMIT 30")
+    return ok(items=[dict(id=x["id"], title=f"{NAMES[x['k']]} #{x['n']}", uid=x["user_id"], name=x["name"]) for x in rows])
+
+
+async def api_admin_nftdone(r):
+    adm(r)
+    await pool.execute("UPDATE nfts SET status='withdrawn' WHERE id=$1 AND status='withdraw'",
+                       as_int((await r.json()).get("id")))
+    return ok()
+
+
+async def api_admin_broadcast(r):
+    adm(r)
+    text = str((await r.json()).get("text", "")).strip()
+    if not 1 <= len(text) <= 1000:
+        raise Err("Текст от 1 до 1000 символов")
+    ids = [x["id"] for x in await pool.fetch("SELECT id FROM users WHERE NOT banned")]
+
+    async def run():
+        for i in ids:
+            try:
+                await bot.send_message(i, text)
+            except Exception:
+                pass
+            await asyncio.sleep(0.05)
+    asyncio.create_task(run())
+    return ok(count=len(ids))
+
+
+
 async def index(_):
     return web.FileResponse(Path(__file__).with_name("index.html"))
 
@@ -548,6 +670,10 @@ async def main():
         web.post("/api/crash/cash", api_crash_cash),
         web.post("/api/nft/buy", api_nft_buy), web.post("/api/nft/sell", api_nft_sell),
         web.post("/api/nft/withdraw", api_nft_withdraw),
+        web.get("/api/admin/stats", api_admin_stats), web.post("/api/admin/user", api_admin_user),
+        web.post("/api/admin/balance", api_admin_balance), web.post("/api/admin/ban", api_admin_ban),
+        web.post("/api/admin/givenft", api_admin_givenft), web.get("/api/admin/nftreq", api_admin_nftreq),
+        web.post("/api/admin/nftdone", api_admin_nftdone), web.post("/api/admin/broadcast", api_admin_broadcast),
     ])
     runner = web.AppRunner(app)
     await runner.setup()
