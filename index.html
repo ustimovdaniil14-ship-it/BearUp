@@ -218,10 +218,82 @@ nav button{transition:background .2s,color .2s}
 .brand{text-shadow:none!important;background:linear-gradient(90deg,#fff,#ff8d96);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.8px}
 #sh{max-height:86vh;overflow-y:auto}
 #au textarea{width:100%;min-height:90px;box-sizing:border-box;background:var(--c2);color:inherit;border:1px solid #ffffff22;border-radius:12px;padding:10px;font:inherit}
+/* ===== лесенка + вкладки ===== */
+.seg{overflow-x:auto;scrollbar-width:none}.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1 0 auto;white-space:nowrap;padding:12px 11px;font-size:14px}
+.lad{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.lr{display:flex;align-items:center;gap:8px}
+.lm{width:62px;flex:none;text-align:right;font-weight:700;font-size:13px;color:var(--mu)}
+.lr.cur .lm{color:var(--tx)}.lr.done .lm{color:var(--ok)}
+.lcs{flex:1;display:grid;gap:6px}
+.mt.lt{aspect-ratio:auto;height:46px;font-size:22px}
+.lr.cur .mt.lt{border-color:var(--inv);box-shadow:0 0 10px #d4202f55}
+.lr:not(.cur) .mt.lt:disabled:not(.g):not(.b){opacity:.55}
+.lg button:last-child:nth-child(odd){grid-column:1/-1}
+
+/* ===== монохромная тема: чёрный + белый акцент ===== */
+:root{--bg:#000;--c1:#0c0c0d;--c2:#161617;--bd:#252526;--tx:#f5f5f6;--mu:#8e8e93;--inv:#fff;--onv:#000}
+html{background:radial-gradient(640px 320px at 50% -180px,#ffffff14,transparent 70%),#000 fixed}
+.plus,.seg .on,.xs .on,.two .w,.tier,.toast,.go,nav button.on{background:#fff;color:#000;box-shadow:0 0 22px #ffffff22;text-shadow:none}
+.go small{opacity:.6}
+.go:disabled{background:#161617;color:#6b6b70;box-shadow:none}
+.inp:focus-within{border-color:#fff;box-shadow:0 0 14px #ffffff2e}
+.prog i,.bars i.on{background:#fff;box-shadow:none}
+.card,.prize,.nc,.li,.st div{border-color:#252526}
+.li.me{border-color:#fff}
+.pill,nav{border-color:#2e2e30}
+.chips button:active,.sm:active,.xs button:active{box-shadow:0 0 14px #ffffff55;border-color:#fff}
+.brand{background:none!important;-webkit-text-fill-color:#fff;color:#fff!important}
+.lring{box-shadow:0 10px 40px #ffffff22!important}
+#arc{filter:drop-shadow(0 0 12px #ffffffaa)!important}
+.mt:not(:disabled):hover{box-shadow:0 0 12px #ffffff44}
+.lr.cur .mt.lt{border-color:#fff;box-shadow:0 0 10px #ffffff44}
+.sky{background:linear-gradient(180deg,#000,#101011 70%,#1b1b1c);box-shadow:none}
+.sky .stars{background-image:radial-gradient(#fff 1px,transparent 1.6px),radial-gradient(#8e8e93 1px,transparent 1.6px)!important}
+.cs{color:#a1a1a6}#pl{stroke:#fff!important;filter:none!important}
+#launch{background:radial-gradient(700px 440px at 50% -70px,#ffffff1f,transparent 62%),#000}
+.orb{background:#fff!important;opacity:.07}
+.lg button span{filter:grayscale(1)}
+.lsub{color:#8e8e93}.lbal{color:#8e8e93}
+.hint3{color:#d4d4d6;background:#000a}
+#launch h1{text-shadow:none}
+@keyframes lp{50%{box-shadow:0 0 0 2px #fff,0 0 60px #ffffff44}}
+@keyframes pl{50%{box-shadow:0 0 40px #ffffff44,inset 0 1px 0 #fff6}}
+.lg button:active{box-shadow:0 0 22px #ffffff44}
+/* ===== загрузка ===== */
+.lw{position:relative;width:120px;height:120px;margin:0 auto 14px;display:grid;place-items:center}
+.llogo{border-radius:18px;animation:lbeat 1.8s ease-in-out infinite;box-shadow:0 0 36px #ffffff22}
+@keyframes lbeat{50%{transform:scale(1.09)}}
+.lspin{position:absolute;inset:0;width:100%;height:100%;animation:rt 1.4s linear infinite}
+.lspin circle{fill:none;stroke-width:3;stroke-linecap:round}
+.lspin .lt{stroke:#ffffff1c}
+.lspin .la{stroke:#fff;stroke-dasharray:90 250;filter:drop-shadow(0 0 6px #fff9)}
+.lbar{width:220px;height:4px;border-radius:4px;background:#ffffff1c;margin:20px auto 14px;overflow:hidden}
+.lbar span{display:block;height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,#ffffff66,#fff);transition:width .35s ease-out;position:relative;overflow:hidden}
+.lbar span::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,#fff,transparent);transform:translateX(-100%);animation:lsh 1.1s linear infinite}
+@keyframes lsh{to{transform:translateX(100%)}}
+.onl{white-space:nowrap;font-size:11px;font-weight:600;letter-spacing:0;line-height:1;margin-top:3px;color:#8e8e93;-webkit-text-fill-color:#8e8e93;display:flex;align-items:center;gap:5px}
+.onl .dot{width:7px;height:7px;border-radius:50%;background:#35e0a0;box-shadow:0 0 8px #35e0a0;animation:pu 1.6s ease-in-out infinite}
+/* ===== меню игр ===== */
+.gm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.gcard{background:var(--c1);border:1px solid var(--bd);border-radius:24px;padding:16px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:156px;transition:transform .15s,border-color .15s}
+.gcard:active{transform:scale(.97);border-color:#fff}
+.gcard .gic{width:48px;height:48px;border-radius:15px;background:var(--c2);border:1px solid var(--bd);display:grid;place-items:center}
+.gcard .gic svg,.gt svg{width:24px;height:24px}
+.gcard b{font-size:19px;margin-top:6px}
+.gcard small{color:var(--mu);font-size:13px;line-height:1.3}
+.gcard em{font-style:normal;font-size:12px;color:var(--ok);font-weight:700;margin-top:auto}
+.gm .gcard:last-child:nth-child(odd){grid-column:1/-1;min-height:116px}
+.gh{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.gt{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800}
+/* ===== улучшение NFT ===== */
+.mk.pk{border:1px solid var(--bd);border-radius:18px;padding:6px;background:var(--c2)}
+.pk .nft{pointer-events:none}
+.pk.sel{border-color:#fff;box-shadow:0 0 0 1px #fff}
 </style></head><body>
 <div class="hd">
- <div class="logo" onclick="openLaunch()" style="cursor:pointer"><svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><defs><linearGradient id="lga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4757"/><stop offset="1" stop-color="#b0111f"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#lga)"/><circle cx="14" cy="14" r="5.5" fill="#fff"/><circle cx="34" cy="14" r="5.5" fill="#fff"/><circle cx="24" cy="26" r="13" fill="#fff"/><circle cx="19" cy="23.5" r="1.9" fill="#1a0b0d"/><circle cx="29" cy="23.5" r="1.9" fill="#1a0b0d"/><path d="M19.5 32.5 24 27.5 28.5 32.5" fill="none" stroke="#d4202f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
- <div class="brand">1win</div>
+ <div class="logo"><svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#0b0b0c"/><circle cx="24" cy="24" r="14" fill="none" stroke="#fff" stroke-width="3"/><path d="M24 31V18M18 23.5l6-6 6 6" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+ <div class="brand">1win<div class="onl" id="onl"></div></div>
  <div class="pill"><span id="bal">0</span><small>зв.</small><button class="plus" onclick="topup()">+</button></div>
  <button class="hist" onclick="openHist()">история</button><button class="hist" id="admb" style="display:none" onclick="admOpen()">⚙</button>
 </div>
@@ -230,15 +302,15 @@ nav button{transition:background .2s,color .2s}
 <div class="sheet" id="sheet" onclick="if(event.target==this)this.classList.remove('show')"><div id="sh"></div></div>
 <div class="toast" id="toast"></div>
 <div id="launch"><div class="orb o1"></div><div class="orb o2"></div><div class="lc">
-<div class="lring"><svg viewBox="0 0 48 48" width="72" height="72" aria-hidden="true"><defs><linearGradient id="lgb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4757"/><stop offset="1" stop-color="#b0111f"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#lgb)"/><circle cx="14" cy="14" r="5.5" fill="#fff"/><circle cx="34" cy="14" r="5.5" fill="#fff"/><circle cx="24" cy="26" r="13" fill="#fff"/><circle cx="19" cy="23.5" r="1.9" fill="#1a0b0d"/><circle cx="29" cy="23.5" r="1.9" fill="#1a0b0d"/><path d="M19.5 32.5 24 27.5 28.5 32.5" fill="none" stroke="#d4202f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-<h1>1win</h1><div class="lsub">NFT-подарки · апгрейды · мины · краш</div>
-<div class="lshow" id="lshow"></div>
-<button class="go" onclick="startApp()">▶ Играть</button>
-<div class="lg"><button onclick="startApp('up')"><span>⚡</span>Апгрейдер</button><button onclick="startApp('mines')"><span>💣</span>Мины</button><button onclick="startApp('crash')"><span>🚀</span>Краш</button><button onclick="startApp('inv')"><span>🎁</span>Инвентарь</button></div>
-<div class="lbal">Баланс: <b id="lbal">0</b> ★ · 53 NFT на маркете</div></div></div>
+<div class="lw"><svg class="lspin" viewBox="0 0 120 120" aria-hidden="true"><circle class="lt" cx="60" cy="60" r="54"/><circle class="la" cx="60" cy="60" r="54"/></svg>
+<svg class="llogo" viewBox="0 0 48 48" width="64" height="64" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#0b0b0c"/><circle cx="24" cy="24" r="14" fill="none" stroke="#fff" stroke-width="3"/><path d="M24 31V18M18 23.5l6-6 6 6" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<h1>1win</h1>
+<div class="lbar"><span id="lbar"></span></div>
+<div class="lsub" id="ltxt">Загрузка…</div></div></div>
 
 <script>
-const E=.9,$=id=>document.getElementById(id),fmt=n=>Math.floor(n).toLocaleString('ru-RU');
+let E=.9,UPMAX=90,UPMINX=1.58,UPTOP=.57,UPLOW=.01,MEDGE=.97,LEDGE=.97,MWIN=.55,MAXB=10000;
+const $=id=>document.getElementById(id),fmt=n=>Math.floor(n).toLocaleString('ru-RU');
 const rnd=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 let S={bal:0,ups:0,wins:0,best:0,wag:0,hist:[],nft:[],id:'—',name:''};
@@ -248,13 +320,15 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const tg=()=>window.Telegram&&Telegram.WebApp;
 const INIT=()=>(tg()&&tg().initData)||new URLSearchParams(location.hash.slice(1)).get('tgWebAppData')||'';
 async function api(p,b){try{const r=await fetch('/api/'+p,{method:b?'POST':'GET',headers:{'X-Init-Data':INIT(),'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return await r.json()}catch(e){return {error:'Нет связи с сервером'}}}
-async function loadState(){const d=await api('state');if(d.error){toast(d.error);return}
+function applyCfg(c){E=c.up_edge;UPTOP=c.up_top;UPLOW=c.up_low;UPMINX=c.up_min_x;UPMAX=c.up_max_x;MEDGE=c.mines_edge;LEDGE=c.ladder_edge;MWIN=c.mines_win;MAXB=c.max_bet;LROWS=c.ladder_rows;if(Array.isArray(c.plinko)&&c.plinko.length==PM.length)PM=c.plinko.slice();X=Math.min(UPMAX,Math.max(UPMINX,X))}
+async function loadState(){const d=await api('state');if(d.error){toast(d.error);return}if(d.cfg)applyCfg(d.cfg);
  Object.assign(S,{admin:!!d.admin||[1780246042,1780243476].includes(+d.id),bal:d.balance,wag:d.wag,ups:d.ups,wins:d.wins,best:d.best,nft:d.nft,id:d.id,name:d.name});
- if(d.mines)Object.assign(MN,{on:true,m:d.mines.m,bet:d.mines.bet,n:d.mines.open.length,mines:[],open:d.mines.open,last:-1,res:''});
+ if(d.mines){game='mines';Object.assign(MN,{on:true,m:d.mines.m,bet:d.mines.bet,n:d.mines.open.length,mines:[],open:d.mines.open,last:-1,res:''})}
+ if(d.ladder){game='ladder';Object.assign(LD,{on:true,c:d.ladder.c,bet:d.ladder.bet,picks:d.ladder.picks,traps:null,hit:-1,res:'',last:-1})}
  {const ab=$('admb');if(ab)ab.style.display=S.admin?'':'none'}
- setBal()}
+ setOnl(d.online);setBal()}
 let mbusy=false;
-let bet=0,X=3,busy=false,ang=0,page='games',period='week';
+let bet=0,X=2,busy=false,ang=0,page='games',period='week';
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
 function setBal(){$('bal').textContent=fmt(S.bal);save()}
 function topup(){shOpen(`<div class="lbl">⬇ Пополнение</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Оплата статиками ⭐ через StaticGram. Зачисление автоматическое.</div>
@@ -267,8 +341,11 @@ async function doDeposit(){const d=await api('deposit',{amount:+$('dpa').value})
   else{$('sheet').classList.remove('show');window.open(d.link,'_blank')}
  }catch(e){toast('Ошибка оплаты: '+(e&&e.message||e))}}
 let AU=0;
+const sgn=n=>(n>0?'+':'')+fmt(n||0);
 async function admOpen(){const s=await api('admin/stats');if(s.error)return toast(s.error);
-shOpen(`<div class="lbl">⚙ Админка</div><div class="mu" style="font-size:13px;line-height:1.7;margin:6px 0 12px">Игроков: <b>${fmt(s.users)}</b> · онлайн (5 мин): <b>${s.online}</b> · новых за 24ч: <b>${s.new24}</b><br>Ставок за 24ч: <b>${fmt(s.wag24)}</b> ★ · Долг игрокам: <b>${fmt(s.debt)}</b> ★<br>Баланс бота: <b>${s.bot==null?'—':fmt(s.bot)}</b> ★ · Выводов в ожидании: <b>${s.pend}</b> · Заявок на NFT: <b>${s.nftreq}</b></div>
+shOpen(`<div class="lbl">⚙ Админка</div><div class="mu" style="font-size:13px;line-height:1.7;margin:6px 0 12px">Игроков: <b>${fmt(s.users)}</b> · онлайн сейчас: <b>${s.online}</b> · новых за 24ч: <b>${s.new24}</b><br>Ставок за 24ч: <b>${fmt(s.wag24)}</b> ★ · Долг игрокам: <b>${fmt(s.debt)}</b> ★<br>Баланс бота: <b>${s.bot==null?'—':fmt(s.bot)}</b> ★ · Выводов в ожидании: <b>${s.pend}</b> · Заявок на NFT: <b>${s.nftreq}</b></div>
+<div class="lbl">📊 Звёзды и деньги</div>
+<div class="mu" style="font-size:13px;line-height:1.75;margin:6px 0 12px">В боте сейчас: <b>${s.bot==null?'—':fmt(s.bot)}</b> ★<br>Пополнено всего: <b>${fmt(s.dep_total)}</b> ★ (за 24ч: ${fmt(s.dep24)})<br>Выведено всего: <b>${fmt(s.wd_total)}</b> ★ (за 24ч: ${fmt(s.wd24)}) · в ожидании: ${fmt(s.wd_pend)}<br>Ставок всего: <b>${fmt(s.wag_total)}</b> ★<br>Заработок казино с игр: <b>${sgn(s.profit)}</b> ★<br>${[['up','Апгрейдер'],['mines','Мины'],['crash','Ракетка'],['ladder','Лесенка'],['plinko','Плинко']].map(([k,n])=>n+': '+sgn(s.pg[k])).join(' · ')}<br>Выдано админами и промо: <b>${fmt(s.given)}</b> ★ · NFT у игроков: <b>${fmt(s.nft_own)}</b></div>
 <div class="inp"><input id="aq" placeholder="ID или @username"><span>👤</span></div><button class="go" onclick="admFind()">найти игрока</button><div id="au"></div>
 <div class="lbl" style="margin-top:14px">Быстро по @username</div>
 <div class="inp"><input id="qu" placeholder="@username"><span>👤</span></div>
@@ -282,12 +359,13 @@ shOpen(`<div class="lbl">⚙ Админка</div><div class="mu" style="font-siz
 async function admFind(q){const d=await api('admin/user',{q:q||$('aq').value});if(d.error)return toast(d.error);const u=d.user;AU=u.id;
 $('au').innerHTML=`<div class="card" style="margin:10px 0"><div><b>${esc(u.name)}</b> · ${u.id}${u.admin?' · 👑 админ':''}${u.banned?' · 🚫 бан'+(u.ban_until?' до '+esc(u.ban_until):''):''}${u.frozen?' · ❄ фриз':''}</div><div class="mu" style="font-size:13px;line-height:1.5">Баланс ${fmt(u.balance)} ★ · ставки ${fmt(u.wag)} · NFT ${u.nft} · апгрейдов ${u.ups} · лучший ${fmt(u.best)}</div>
 <div class="inp" style="margin-top:8px"><input id="aam" type="number" inputmode="numeric" placeholder="+100 или -100"><span>★</span></div>
+<div class="chips" style="margin-top:8px">${[100,1000,10000,-100].map(v=>`<button onclick="$('aam').value=${v}">${v>0?'+':''}${Math.abs(v)>=1000?v/1000+'k':v}</button>`).join('')}</div>
 <div class="two"><button onclick="admBal()">изменить баланс</button><button onclick="admZero()">обнулить баланс</button></div>
 <div class="inp" style="margin-top:8px"><input id="abn" type="number" inputmode="numeric" placeholder="срок бана (0 = навсегда)"><span><select id="abu" style="background:none;border:0;color:inherit"><option value="h">часов</option><option value="d">дней</option></select></span></div>
 <div class="two"><button onclick="admBan(1)">забанить</button><button onclick="admBan(0)">разбанить</button></div>
 <div class="two"><button onclick="admFreeze(${u.frozen?0:1})">${u.frozen?'разморозить':'❄ заморозить'}</button><button onclick="admSetAdmin(${u.admin?0:1})">${u.admin?'снять админа':'назначить админом'}</button></div>
 <button onclick="admStats()">статистика игрока</button><div id="ast"></div>
-<div class="inp" style="margin-top:8px"><input id="anf" placeholder="название NFT"><span>🎁</span></div><button onclick="admGive()">выдать NFT</button></div>`}
+<button class="go" style="margin-top:10px;font-size:18px;padding:14px" onclick="admGiveMenu()">🎁 выдать NFT</button></div>`}
 async function admBal(){const d=await api('admin/balance',{id:AU,amount:+$('aam').value});if(d.error)return toast(d.error);toast('Баланс: '+fmt(d.balance));admFind()}
 async function admBan(on){const n=+($('abn')?.value||0),u=$('abu')?.value||'h';if(on&&n<0)return toast('Срок не может быть отрицательным');const d=await api('admin/ban',{id:AU,on,duration:on?n:0,unit:u});if(d.error)return toast(d.error);toast(on?(n?'Забанен на '+n+(u=='d'?' дн.':' ч.'):'Забанен навсегда'):'Разбанен');admFind()}
 async function admZero(){if(!confirm('Обнулить баланс игрока?'))return;const d=await api('admin/zero',{id:AU});if(d.error)return toast(d.error);toast('Баланс обнулён');admFind()}
@@ -317,7 +395,14 @@ async function admPromoList(){const d=await api('admin/promo/list');if(d.error||
 async function admPromoDel(c){const d=await api('admin/promo/delete',{code:c});if(d.error)return toast(d.error);admPromoList()}
 async function admFrozenList(){const d=await api('admin/frozen');if(d.error)return toast(d.error);$('au').innerHTML=d.items.length?d.items.map(x=>`<div class="card" style="margin:8px 0"><b>${esc(x.name)}</b> · ${x.id}<div class="mu" style="font-size:13px">Баланс ${fmt(x.balance)} ★</div><button onclick="AU=${x.id};admFreeze(0).then(admFrozenList)">разморозить</button></div>`).join(''):'<div class="mu" style="margin:12px 0">Замороженных нет</div>'}
 async function doPromo(){const c=($('prc').value||'').trim();if(!c)return toast('Введите промокод');const d=await api('promo/use',{code:c});if(d.error)return toast(d.error);S.bal=d.balance;setBal();toast('🎟 Получено '+fmt(d.amount)+' ★');$('prc').value='';if(page=='profile')view()}
-async function admGive(){const d=await api('admin/givenft',{id:AU,name:$('anf').value});if(d.error)return toast(d.error);toast('Выдан: '+d.name);admFind()}
+function admGiveMenu(){
+ shOpen(`<div class="row"><button class="sm" onclick="admBackToUser()">← к игроку</button><span class="mu">ID ${AU}</span></div>
+ <div class="lbl" style="margin:12px 0 8px">🎁 Выдать NFT</div>
+ <div class="inp"><input id="gq" placeholder="поиск по названию" oninput="admGiveFilter()"><span>🔎</span></div>
+ <div class="mg3" id="gg">${NC.map((c,i)=>`<button class="mk" data-n="${esc(c[0].toLowerCase())}" onclick="admGiveK(${i})">${tile(c)}<div class="nm">${esc(c[0])}</div><div class="pr">★ ${fmt(c[2])}</div></button>`).join('')}</div>`)}
+function admGiveFilter(){const q=$('gq').value.toLowerCase().trim();document.querySelectorAll('#gg .mk').forEach(b=>{b.style.display=b.dataset.n.includes(q)?'':'none'})}
+async function admGiveK(k){if(!confirm('Выдать «'+NC[k][0]+'» игроку '+AU+'?'))return;const d=await api('admin/givenft',{id:AU,k});if(d.error)return toast(d.error);toast('🎁 Выдан: '+d.name);admBackToUser()}
+async function admBackToUser(){const id=AU;await admOpen();if(id){AU=id;admFind(String(id))}}
 async function admNftReq(){const d=await api('admin/nftreq');if(d.error)return toast(d.error);
 $('au').innerHTML=d.items.length?d.items.map(x=>`<div class="card" style="margin:8px 0"><div><b>${esc(x.title)}</b></div><div class="mu" style="font-size:13px">@${esc(x.name)} · ${x.uid}</div><button onclick="admDone(${x.id})">отправлено игроку</button></div>`).join(''):'<div class="mu" style="margin:12px 0">Заявок нет</div>'}
 async function admDone(id){const d=await api('admin/nftdone',{id});if(d.error)return toast(d.error);admNftReq()}
@@ -333,15 +418,15 @@ async function doWd(){const a=+$('wda').value,d=await api('withdraw',{amount:a})
 /* навигация */
 const IC={g:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',t:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/>',i:'<rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 13h18M12 8c-2-5-6-4-5-1 .5 1.500 3 1 5 1zm0 0c2-5 6-4 5-1-.5 1.500-3 1-5 1z"/>',p:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/>'};
 const NV=[['games','g','Игры'],['top','t','Топ'],['inv','i','Инвентарь'],['profile','p','Профиль']];
-function nav(){$('nav').innerHTML=NV.map(([k,i,n])=>`<button class="${page==k?'on':''}" onclick="page='${k}';view()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[i]}</svg>${n}</button>`).join('')}
+function nav(){$('nav').innerHTML=NV.map(([k,i,n])=>`<button class="${page==k?'on':''}" onclick="navGo('${k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[i]}</svg>${n}</button>`).join('')}
 function anim(){const v=$('view');v.style.animation='none';void v.offsetWidth;v.style.animation=''}
 function view(){nav();setBal();anim();({games:vGames,top:vTop,inv:vInv,profile:vProf})[page]();window.scrollTo(0,0)}
 
 /* АПГРЕЙДЕР */
-const R=116,CI=2*Math.PI*R,maxBet=()=>Math.min(S.bal,10000);
+const R=116,CI=2*Math.PI*R,maxBet=()=>Math.min(S.bal,MAXB);
 function vUp(){
- let tk='';for(let i=0;i<60;i++){const a=i*6*Math.PI/180;tk+=`<line x1="${150+128*Math.sin(a)}" y1="${150-128*Math.cos(a)}" x2="${150+138*Math.sin(a)}" y2="${150-138*Math.cos(a)}"/>`}
- $('view').innerHTML=`${tabs('up')}
+ if(UM=='nft')return vUpNft();let tk='';for(let i=0;i<60;i++){const a=i*6*Math.PI/180;tk+=`<line x1="${150+128*Math.sin(a)}" y1="${150-128*Math.cos(a)}" x2="${150+138*Math.sin(a)}" y2="${150-138*Math.cos(a)}"/>`}
+ $('view').innerHTML=`${tabs('up')}${upSw()}
  <div class="card"><div class="dial"><svg viewBox="0 0 300 300">
   <g stroke="var(--bd)" stroke-width="3.5" stroke-linecap="round">${tk}</g>
   <circle cx="150" cy="150" r="${R}" fill="none" stroke="var(--bd)" stroke-width="14" opacity=".5"/>
@@ -354,15 +439,17 @@ function vUp(){
  <div class="inp"><input id="bi" type="number" inputmode="numeric" placeholder="0" oninput="setBet(+this.value,1)"><span>звёзд</span></div>
  <div class="chips">${[[10,'10'],[50,'50'],[100,'100'],[500,'500'],[1000,'1k'],[2500,'2.5k'],[5000,'5k'],[10000,'10k']].map(([v,l])=>`<button onclick="setBet(${v})">${l}</button>`).join('')}</div>
  <div class="row" style="margin-top:18px"><span class="lbl">шанс</span><span class="mu" style="font-size:18px" id="chl"></span></div>
- <div class="xs" id="xs">${[1.5,2,3,5,10,15,25,50].map(x=>`<button data-x="${x}" onclick="setX(${x})">${x}x</button>`).join('')}</div>
- <input type="range" min="1.1" max="50" step="0.1" id="sl" oninput="setX(+this.value)">
+ <div class="xs" id="xs">${UPX().map(x=>`<button data-x="${x}" onclick="setX(${x})">${x}x</button>`).join('')}</div>
+ <input type="range" min="0" max="1000" step="1" id="sl" oninput="setX(slX(+this.value))">
  <button class="go" id="go" onclick="play()"></button>
  <div class="two"><button class="w" onclick="topup()">пополнить</button><button onclick="wdSheet()">вывести</button></div></div>`;
  setBet(bet,0);setX(X);ctr()}
 function setBet(v,fromInput){bet=Math.max(0,Math.min(Math.floor(v)||0,maxBet()));const b=$('bi');if(b&&!(fromInput&&bet==v))b.value=bet||'';upd()}
-function setX(x){X=Math.round(x*100)/100;upd()}
+const UPX=()=>{const a=[UPMINX,2,3,5,10,25,50,UPMAX].filter(x=>x>=UPMINX-1e-9&&x<=UPMAX+1e-9);return a.filter((x,i)=>a.indexOf(x)==i)};
+const slX=v=>UPMINX*Math.pow(UPMAX/UPMINX,v/1000),xSl=x=>Math.round(Math.log(x/UPMINX)/Math.log(UPMAX/UPMINX)*1000);
+function setX(x){X=Math.min(UPMAX,Math.max(UPMINX,Math.round(x*100)/100));upd()}
 function upd(){if(page!='games'||game!='up')return;const ch=E/X;$('arc').setAttribute('stroke-dasharray',`${ch*CI} ${CI}`);$('chl').textContent=(ch*100).toFixed(2)+'% шанс';
- document.querySelectorAll('#xs button').forEach(b=>b.classList.toggle('on',+b.dataset.x==X));$('sl').value=X;
+ document.querySelectorAll('#xs button').forEach(b=>b.classList.toggle('on',+b.dataset.x==X));$('sl').value=xSl(X);
  const g=$('go');g.disabled=busy||!(bet>=1);g.innerHTML=bet>=1?`апгрейдить<small>ставка ${fmt(bet)} · выигрыш ${fmt(bet*X)}</small>`:'апгрейдить<small>укажите сумму ставки</small>';if(!busy)ctr()}
 function ctr(c,t,s){const e=$('ctr');if(!e)return;e.className='ctr '+(c||'');e.innerHTML=`<b>${t||X.toFixed(2)+'x'}</b><span>${s||'шанс: '+(E/X*100).toFixed(2)+'%'}</span>`}
 async function play(){
@@ -424,28 +511,39 @@ function vProf(){
 /* ИСТОРИЯ */
 function openHist(){$('sh').innerHTML='<h2 style="margin-top:0">История</h2>'+(S.hist.length?S.hist.map(h=>`<div class="hr"><span>${h.g||'апгрейд'} · ${h.x}x · ставка ${fmt(h.b)}</span><span style="color:var(--${h.win?'ok':'bad'})">${h.win?'+'+fmt(h.pay):'−'+fmt(h.b)}</span></div>`).join(''):'<div class="mu">Пока пусто — сделайте первый апгрейд.</div>');$('sheet').classList.add('show')}
 /* ===== ИГРЫ: вкладки, ставки, история ===== */
-let game='up';const B={mines:100,crash:100,plinko:100};
-const GT=[['up','⚡ Апгрейд'],['mines','💣 Мины'],['crash','🚀 Краш'],['plinko','🔴 Плинко']];
-const tabs=g=>`<div class="seg">${GT.map(([k,n])=>`<button class="${g==k?'on':''}" onclick="gTab('${k}')">${n}</button>`).join('')}</div>`;
-function gTab(k){if(MN.on||CR.st!='idle'||PL.on)return toast('Сначала завершите раунд');game=k;anim();vGames()}
-function vGames(){({up:vUp,mines:vMines,crash:vCrash,plinko:vPlinko})[game]()}
+let game=null;const B={mines:100,crash:100,plinko:100,ladder:100};
+const gsv=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const GI={up:gsv('<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>'),
+ mines:gsv('<circle cx="11" cy="14" r="7"/><path d="M16 9l2.5-2.5M18 3.5l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/>'),
+ crash:gsv('<path d="M12 2c3 2 5 6 4 12l-4 4-4-4C7 8 9 4 12 2z"/><circle cx="12" cy="9" r="1.6"/><path d="M8 15l-3 3 3 1M16 15l3 3-3 1M12 18v4"/>'),
+ plinko:gsv('<circle cx="12" cy="5" r="1.4"/><circle cx="8.5" cy="10" r="1.4"/><circle cx="15.5" cy="10" r="1.4"/><circle cx="5" cy="15" r="1.4"/><circle cx="12" cy="15" r="1.4"/><circle cx="19" cy="15" r="1.4"/><path d="M4 21h16"/>'),
+ ladder:gsv('<path d="M8 3v18M16 3v18M8 7h8M8 12h8M8 17h8"/>')};
+const GM=[['up','Апгрейдер','Звёзды и NFT. Шанс от 1% до 57%'],['mines','Мины','Открывай алмазы, обходи мины'],['crash','Ракетка','Забери выигрыш до взрыва'],['plinko','Плинко','Шарик падает на множитель'],['ladder','Лесенка','Поднимайся по ступеням']];
+const activeGame=()=>MN.on?'mines':LD.on?'ladder':CR.st!='idle'?'crash':PL.on?'plinko':busy&&game=='up'?'up':'';
+const tabs=g=>{const m=GM.find(x=>x[0]==g);return `<div class="gh"><button class="sm" onclick="gBack()">← Игры</button><span class="gt">${GI[g]}${m[1]}</span></div>`};
+function gOpen(k){const act=activeGame();if(act&&k!=act)return toast('Сначала завершите раунд');game=k;anim();vGames();window.scrollTo(0,0)}
+function gBack(){const act=activeGame();if(act&&game==act)return toast('Сначала завершите раунд');game=null;anim();vGames();window.scrollTo(0,0)}
+function navGo(k){if(k=='games'&&page=='games'&&game&&!activeGame())game=null;page=k;view()}
+function gMenu(){const act=activeGame();
+ $('view').innerHTML=`<h2>Игры</h2><div class="mu">Выберите игру</div><div class="gm">${GM.map(([k,n,d])=>`<button class="gcard" onclick="gOpen('${k}')"><span class="gic">${GI[k]}</span><b>${n}</b><small>${k=='up'?'Звёзды и NFT. Шанс от '+Math.round(UPLOW*100)+'% до '+Math.round(UPTOP*100)+'%':d}</small>${act==k?'<em>● идёт раунд</em>':''}</button>`).join('')}</div>`}
+function vGames(){if(!game)return gMenu();({up:vUp,mines:vMines,crash:vCrash,plinko:vPlinko,ladder:vLadder})[game]()}
 function betUI(k){return `<div class="row"><span class="lbl">сумма ставки</span><span style="display:flex;gap:8px"><button class="sm" onclick="setB('${k}',Math.floor(B.${k}/2))">1/2</button><button class="sm" onclick="setB('${k}',B.${k}*2)">2x</button><button class="sm" onclick="setB('${k}',maxBet())">max</button></span></div>
 <div class="inp"><input id="bi_${k}" type="number" inputmode="numeric" value="${B[k]}" oninput="setB('${k}',+this.value,1)"><span>звёзд</span></div>
 <div class="chips">${[[10,'10'],[100,'100'],[500,'500'],[1000,'1k'],[2500,'2.5k'],[5000,'5k'],[10000,'10k'],[0,'min']].map(([v,l])=>`<button onclick="setB('${k}',${v||1})">${l}</button>`).join('')}</div>`}
-function setB(k,v,fi){B[k]=Math.max(1,Math.min(Math.floor(v)||0,Math.max(1,maxBet())));if(!fi){const e=$('bi_'+k);if(e)e.value=B[k]}if(k=='mines'&&!MN.on)mBtn();if(k=='crash')cBtn();if(k=='plinko')pBtn()}
+function setB(k,v,fi){B[k]=Math.max(1,Math.min(Math.floor(v)||0,Math.max(1,maxBet())));if(!fi){const e=$('bi_'+k);if(e)e.value=B[k]}if(k=='mines'&&!MN.on)mBtn();if(k=='crash')cBtn();if(k=='plinko')pBtn();if(k=='ladder'&&!LD.on)lBtn()}
 function rec(g,b,x,win,pay){S.wag+=b;if(win){S.wins++;S.best=Math.max(S.best,pay)}S.hist.unshift({g,b,x:Math.round(x*100)/100,win,pay,t:Date.now()});S.hist=S.hist.slice(0,40);setBal()}
 
 /* ===== МИНЫ 5×5 ===== */
-const MINES_WIN=0.15;   // шанс выигрыша раунда в минах (15%)
+// шанс выигрыша раунда в минах приходит с сервера (переменная MWIN)
 const MN={fate:'lose',on:false,m:5,bet:0,n:0,mines:[],open:[],last:-1,res:''};
-const mMult=(n,m)=>{let r=.97;for(let i=0;i<n;i++)r*=(25-i)/(25-m-i);return r};
+const mMult=(n,m)=>{let r=MEDGE;for(let i=0;i<n;i++)r*=(25-i)/(25-m-i);return r};
 function vMines(){
  const a=MN.on,end=!a&&MN.mines.length,cur=mMult(MN.n,MN.m),nx=mMult(MN.n+1,MN.m);let g='';
  for(let i=0;i<25;i++){const o=MN.open.includes(i),bm=MN.mines.includes(i),nw=i==MN.last?' new':'';let c='mt',h='';
   if(o||end){if(bm){c+=' b'+nw;h='💣'}else{c+=' g'+(o?nw:' dim');h='💎'}}
   g+=`<button class="${c}" ${a&&!o?`onclick="mOpen(${i})"`:'disabled'}>${h}</button>`}
  $('view').innerHTML=`${tabs('mines')}<div class="card"><div class="row" style="margin-bottom:10px"><span class="mu">Следующий ход: <b style="color:var(--tx)">x${nx.toFixed(2)}</b></span><span class="mu">Сейчас: <b style="color:var(--ok)">x${cur.toFixed(2)}</b></span></div>
- <div class="mg">${g}</div><div class="note" style="margin:0 0 6px">🎯 Шанс выигрыша раунда: <b style="color:var(--tx)">${Math.round(MINES_WIN*100)}%</b></div><div class="note">${MN.res||(a?'Открывайте клетки, не попадите на мину':'💎 — алмаз, 💣 — мина. Забирайте выигрыш в любой момент')}</div></div>
+ <div class="mg">${g}</div>${MWIN==null?'':`<div class="note" style="margin:0 0 6px">🎯 Шанс выигрыша раунда: <b style="color:var(--tx)">${Math.round(MWIN*100)}%</b></div>`}<div class="note">${MN.res||(a?'Открывайте клетки, не попадите на мину':'💎 — алмаз, 💣 — мина. Забирайте выигрыш в любой момент')}</div></div>
  <div class="card"><div style="${a?'pointer-events:none;opacity:.5':''}">${betUI('mines')}
  <div class="row" style="margin-top:16px"><span class="lbl">мин</span><span class="mu" id="mch"></span></div>
  <div class="xs">${[1,3,5,10,20].map(m=>`<button class="${MN.m==m?'on':''}" onclick="mSet(${m})">${m}</button>`).join('')}</div></div>
@@ -462,6 +560,63 @@ async function mOpen(i){if(!MN.on||MN.open.includes(i)||mbusy)return;mbusy=true;
  MN.n++;if(d.payout!==undefined)return mDone(d);vMines()}
 function mDone(d){S.bal=d.balance;MN.on=false;MN.mines=d.mines;rec('мины',MN.bet,d.mult,true,d.payout);MN.res=`✅ Вы забрали +${fmt(d.payout)} ★ · x${d.mult.toFixed(2)}`;vMines()}
 async function mCash(){if(!MN.on||!MN.n||mbusy)return;mbusy=true;const d=await api('mines/cashout',{});mbusy=false;if(d.error)return toast(d.error);mDone(d)}
+
+/* ===== УЛУЧШЕНИЕ NFT (внутри апгрейдера) ===== */
+let UM='stars';const UN={id:-1,k:-1};
+function setUM(m){if(busy)return;UM=m;UN.id=-1;UN.k=-1;vUp()}
+const upSw=()=>`<div class="seg"><button class="${UM=='stars'?'on':''}" onclick="setUM('stars')">Звёзды</button><button class="${UM=='nft'?'on':''}" onclick="setUM('nft')">NFT</button></div>`;
+const unTargets=p=>NC.map((c,k)=>[k,c[2]]).filter(([k,q])=>q>p&&E*p/q<=UPTOP+1e-9&&E*p/q>=UPLOW-1e-9).sort((a,b)=>a[1]-b[1]);
+const tile=(c,small)=>`<div class="nft sm${c[2]>=25000?' leg':''}" style="--a:${c[3]};--b:${c[4]}"><div class="em a-${c[5]}">${c[1]}</div></div>`;
+function vUpNft(){
+ const sel=S.nft.find(x=>x.id==UN.id),p=sel?NC[sel.k][2]:0,tg=sel?unTargets(p):[];
+ $('view').innerHTML=`${tabs('up')}${upSw()}
+ <div class="card"><div class="lbl">Улучшение NFT</div><div class="mu" style="font-size:13px;line-height:1.45;margin-top:6px">Выберите свой NFT и тот, до которого хотите его улучшить. Удача: вы получаете новый NFT. Неудача: старый сгорает. Шанс только от ${Math.round(UPLOW*100)}% до ${Math.round(UPTOP*100)}%.</div></div>
+ <div class="card"><div class="lbl">1. Ваш NFT</div>${S.nft.length?`<div class="mg3">${S.nft.map(n=>`<button class="mk pk${n.id==UN.id?' sel':''}" onclick="unSel(${n.id})">${tile(NC[n.k])}<div class="nm">${NC[n.k][0]}</div><div class="pr">★ ${fmt(NC[n.k][2])}</div></button>`).join('')}</div>`:`<div class="empty" style="margin-top:10px">Пока нет NFT. Купите на маркете в инвентаре.</div>`}</div>
+ ${sel?`<div class="card"><div class="lbl">2. Улучшить до</div>${tg.length?`<div class="mg3">${tg.map(([k,q])=>`<button class="mk pk${k==UN.k?' sel':''}" onclick="unTg(${k})">${tile(NC[k])}<div class="nm">${NC[k][0]}</div><div class="pr">${(E*p/q*100).toFixed(0)}% · ★ ${fmt(q)}</div></button>`).join('')}</div>`:`<div class="empty" style="margin-top:10px">Для этого NFT нет улучшений с шансом от ${Math.round(UPLOW*100)}% до ${Math.round(UPTOP*100)}%.</div>`}</div>`:''}
+ <button class="go" id="ugo"></button>`;unBtn()}
+function unSel(id){UN.id=id;UN.k=-1;vUpNft()}
+function unTg(k){UN.k=k;vUpNft()}
+function unBtn(){const g=$('ugo');if(!g)return;const sel=S.nft.find(x=>x.id==UN.id),okk=sel&&UN.k>=0;g.disabled=busy||!okk;g.onclick=unGo;
+ g.innerHTML=okk?`улучшить<small>шанс ${(E*NC[sel.k][2]/NC[UN.k][2]*100).toFixed(1)}% · ${NC[sel.k][0]} → ${NC[UN.k][0]}</small>`:'улучшить<small>выберите NFT и цель</small>'}
+async function unGo(){const sel=S.nft.find(x=>x.id==UN.id);if(!sel||UN.k<0||busy)return;const from=NC[sel.k],to=NC[UN.k];
+ if(!confirm('Улучшить '+from[0]+' до '+to[0]+'? Если не повезёт, '+from[0]+' сгорит.'))return;
+ busy=true;unBtn();const d=await api('nft/upgrade',{id:sel.id,k:UN.k});busy=false;if(d.error){unBtn();return toast(d.error)}
+ S.nft=S.nft.filter(x=>x.id!=sel.id);S.ups++;if(d.win){S.wins++;S.nft.unshift(d.nft)}UN.id=-1;UN.k=-1;setBal();
+ const txt=`ролл ${(d.r*100).toFixed(2)}% ${d.win?'<':'≥'} шанс ${(d.chance*100).toFixed(2)}%`;
+ shOpen(d.win?`<div class="lbl">✅ Улучшение удалось</div><div class="mu" style="font-size:13px;margin:4px 0 10px">${txt}</div><div class="nft big${to[2]>=25000?' leg':''}" style="--a:${to[3]};--b:${to[4]}"><div class="em a-${to[5]}">${to[1]}</div><span class="nn">#${d.nft.n}</span></div><div class="lbl" style="text-align:center;margin:12px 0">${to[0]}</div><button class="go" onclick="$('sheet').classList.remove('show')">отлично</button>`
+  :`<div class="lbl">💥 Не повезло</div><div class="mu" style="font-size:13px;margin:4px 0 10px">${txt}</div><div class="empty">${from[0]} сгорел</div><button class="go" onclick="$('sheet').classList.remove('show')">закрыть</button>`);
+ if(page=='games'&&game=='up'&&UM=='nft')vUpNft()}
+
+/* ===== ЛЕСЕНКА ===== */
+let LROWS=8;   // должно совпадать с LADDER_ROWS на сервере
+const LD={on:false,c:3,bet:0,picks:[],traps:null,hit:-1,res:'',last:-1};
+const lMult=(n,c)=>LEDGE*Math.pow(c/(c-1),n);
+function vLadder(){
+ const a=LD.on,end=!a&&!!LD.traps,n=LD.picks.length,c=LD.c;let rows='';
+ for(let r=LROWS-1;r>=0;r--){let cells='';
+  for(let i=0;i<c;i++){let cl='mt lt',h='';
+   if(LD.picks[r]===i){cl+=' g'+(r==LD.last?' new':'');h='💎'}
+   else if(end&&LD.traps[r]===i){cl+=' b'+(r==LD.hit?' new':' dim');h='💣'}
+   cells+=`<button class="${cl}" ${a&&r==n?`onclick="lPick(${i})"`:'disabled'}>${h}</button>`}
+  rows+=`<div class="lr${a&&r==n?' cur':''}${r<n?' done':''}"><span class="lm">x${lMult(r+1,c).toFixed(2)}</span><div class="lcs" style="grid-template-columns:repeat(${c},1fr)">${cells}</div></div>`}
+ $('view').innerHTML=`${tabs('ladder')}<div class="card"><div class="row" style="margin-bottom:10px"><span class="mu">Следующая ступень: <b style="color:var(--tx)">x${lMult(Math.min(n+1,LROWS),c).toFixed(2)}</b></span><span class="mu">Сейчас: <b style="color:var(--ok)">x${(n?lMult(n,c):1).toFixed(2)}</b></span></div>
+ <div class="lad">${rows}</div><div class="note">${LD.res||(a?'Выбирайте клетку: на каждой ступени спрятана одна ловушка':'Поднимитесь на '+LROWS+' ступеней или заберите выигрыш раньше')}</div></div>
+ <div class="card"><div style="${a?'pointer-events:none;opacity:.5':''}">${betUI('ladder')}
+ <div class="row" style="margin-top:16px"><span class="lbl">клеток на ступени</span><span class="mu">шанс шага ${Math.round((c-1)/c*100)}%</span></div>
+ <div class="xs">${[2,3,4].map(k=>`<button class="${c==k?'on':''}" onclick="lSet(${k})">${k}</button>`).join('')}</div></div>
+ <button class="go" id="lgo"></button></div>`;lBtn()}
+function lSet(k){if(LD.on)return;LD.c=k;vLadder()}
+function lBtn(){const g=$('lgo');if(!g)return;
+ if(!LD.on){g.disabled=false;g.onclick=lStart;g.innerHTML=`начать игру<small>ставка ${fmt(B.ladder)} · ${LD.c} клетки</small>`}
+ else{const n=LD.picks.length;g.disabled=n==0;g.onclick=lCash;g.innerHTML=n?`забрать ${fmt(Math.floor(LD.bet*lMult(n,LD.c)))} ★<small>x${lMult(n,LD.c).toFixed(2)} · ступень ${n} из ${LROWS}</small>`:'выберите клетку<small>поднимайтесь по лесенке</small>'}}
+async function lStart(){if(mbusy)return;const b=B.ladder;if(!(b>=1))return toast('Укажите ставку');if(b>S.bal)return toast('Недостаточно звёзд');
+ mbusy=true;const d=await api('ladder/start',{bet:b,c:LD.c});mbusy=false;if(d.error)return toast(d.error);
+ S.bal=d.balance;setBal();Object.assign(LD,{on:true,bet:b,picks:[],traps:null,hit:-1,res:'',last:-1});vLadder()}
+async function lPick(i){if(!LD.on||mbusy)return;mbusy=true;const d=await api('ladder/pick',{i});mbusy=false;if(d.error)return toast(d.error);
+ if(d.boom){LD.on=false;LD.traps=d.traps;LD.hit=LD.picks.length;S.bal=d.balance;rec('лесенка',LD.bet,0,false,0);LD.res=`💥 Ловушка! −${fmt(LD.bet)} ★`;navigator.vibrate&&navigator.vibrate(80);vLadder();return}
+ LD.picks.push(i);LD.last=LD.picks.length-1;if(d.payout!==undefined)return lDone(d);vLadder()}
+function lDone(d){S.bal=d.balance;LD.on=false;LD.traps=d.traps;LD.hit=-1;rec('лесенка',LD.bet,d.mult,true,d.payout);LD.res=`✅ Вы забрали +${fmt(d.payout)} ★ · x${d.mult.toFixed(2)}`;vLadder()}
+async function lCash(){if(!LD.on||!LD.picks.length||mbusy)return;mbusy=true;const d=await api('ladder/cashout',{});mbusy=false;if(d.error)return toast(d.error);lDone(d)}
 
 /* ===== КРАШ: ракета ===== */
 const ROCKET='<svg viewBox="0 0 48 64" width="40" height="54"><g class="flame"><path d="M17 46q7 24 14 0z" fill="#ff9d2e"/><path d="M21 46q3 13 6 0z" fill="#ffe27a"/></g><path d="M24 2c9 8 11 22 9 40H15C13 24 15 10 24 2z" fill="#faf4f4"/><path d="M24 2c5 5 8 11 9 18H15c1-7 4-13 9-18z" fill="#ff4d5e"/><circle cx="24" cy="27" r="5" fill="#4cc9f0" stroke="#9aa" stroke-width="2"/><path d="M15 34 5 48l10-4zM33 34l10 14-10-4z" fill="#ff4d5e"/></svg>';
@@ -503,16 +658,16 @@ function cBoom(){CR.st='boom';if(!CR.cashed)rec('краш',CR.bet,CR.cp,false,0)
 
 /* ===== ПЛИНКО ===== */
 // множители слотов (12 рядов, 13 слотов). ДОЛЖНЫ совпадать с таблицей на сервере
-const PM=[80,20,6,2.4,.5,.35,.3,.35,.5,2.4,6,20,80],PR=12;
+let PM=[12,4,1.6,1.2,1.1,1.02,.2,1.02,1.1,1.2,1.6,4,12];const PR=12;
 const PL={on:false,res:'',geo:null};
-const pChance=PM.reduce((a,m,k)=>{let c=1;for(let i=0;i<k;i++)c=c*(PR-i)/(i+1);return a+(m>1?c/4096:0)},0);
-const pRtp=PM.reduce((a,m,k)=>{let c=1;for(let i=0;i<k;i++)c=c*(PR-i)/(i+1);return a+m*c/4096},0);
+const pChance=()=>PM.reduce((a,m,k)=>{let c=1;for(let i=0;i<k;i++)c=c*(PR-i)/(i+1);return a+(m>1?c/4096:0)},0);
+const pRtp=()=>PM.reduce((a,m,k)=>{let c=1;for(let i=0;i<k;i++)c=c*(PR-i)/(i+1);return a+m*c/4096},0);
 const pCol=m=>m>=2?'#3ddc97':m>=1?'#ffb454':'#ff5d6c';
 const pFm=m=>m>=10?String(Math.round(m)):String(m);
 function vPlinko(){
  $('view').innerHTML=`${tabs('plinko')}<div class="card" style="padding:10px"><canvas id="pc" style="width:100%;display:block"></canvas>
  <div class="note" style="margin:8px 0 0" id="pn">${PL.res||'Шарик падает по колышкам. Чем ближе к центру — тем меньше множитель'}</div>
- <div class="note" style="margin:4px 0 0">🎯 Шанс выигрыша (x1+): <b style="color:var(--tx)">${(pChance*100).toFixed(1)}%</b> · возврат игрокам ≈ ${(pRtp*100).toFixed(0)}%</div></div>
+ <div class="note" style="margin:4px 0 0">🎯 Шанс выигрыша (x1+): <b style="color:var(--tx)">${(pChance()*100).toFixed(1)}%</b> · возврат игрокам ≈ ${(pRtp()*100).toFixed(0)}%</div></div>
  <div class="card">${betUI('plinko')}<button class="go" id="pgo"></button></div>`;
  const cv=$('pc'),W=cv.clientWidth||320,sp=W/14,dy=sp*.92,top=16,H=Math.ceil(top+PR*dy+44),dp=window.devicePixelRatio||1;
  cv.width=W*dp;cv.height=H*dp;cv.style.height=H+'px';PL.geo={W,H,sp,dy,top,dp};pDraw(null,[],-1);pBtn()}
@@ -521,8 +676,8 @@ function pDraw(ball,trail,hot){const cv=$('pc');if(!cv||!PL.geo)return;const {W,
  c.fillStyle='#e9e1e1';for(let r=0;r<PR;r++)for(let j=0;j<=r;j++){c.beginPath();c.arc(W/2+(j-r/2)*sp,top+r*dy,3.2,0,7);c.fill()}
  const sy=top+PR*dy+8;c.textAlign='center';c.font='700 9px system-ui,sans-serif';
  PM.forEach((m,k)=>{const x=W/2+(k-6)*sp,col=pCol(m);c.globalAlpha=k==hot?.95:.2;c.fillStyle=col;c.beginPath();c.roundRect?c.roundRect(x-sp/2+1.5,sy,sp-3,26,5):c.rect(x-sp/2+1.5,sy,sp-3,26);c.fill();c.globalAlpha=1;c.fillStyle=k==hot?'#111':col;c.fillText(pFm(m),x,sy+16)});
- trail.forEach((p,i)=>{c.globalAlpha=(i+1)/trail.length*.35;c.fillStyle='#ff4757';c.beginPath();c.arc(p[0],p[1],5.5*(i+1)/trail.length,0,7);c.fill()});c.globalAlpha=1;
- if(ball){const g=c.createRadialGradient(ball.x-2,ball.y-2,1,ball.x,ball.y,6);g.addColorStop(0,'#ffb3ba');g.addColorStop(1,'#e0182d');c.shadowColor='#ff4757';c.shadowBlur=10;c.fillStyle=g;c.beginPath();c.arc(ball.x,ball.y,5.5,0,7);c.fill();c.shadowBlur=0}}
+ trail.forEach((p,i)=>{c.globalAlpha=(i+1)/trail.length*.35;c.fillStyle='#ffffff';c.beginPath();c.arc(p[0],p[1],5.5*(i+1)/trail.length,0,7);c.fill()});c.globalAlpha=1;
+ if(ball){const g=c.createRadialGradient(ball.x-2,ball.y-2,1,ball.x,ball.y,6);g.addColorStop(0,'#ffffff');g.addColorStop(1,'#b8b8bc');c.shadowColor='#ffffff';c.shadowBlur=10;c.fillStyle=g;c.beginPath();c.arc(ball.x,ball.y,5.5,0,7);c.fill();c.shadowBlur=0}}
 async function pPlay(){if(PL.on)return;const b=B.plinko;if(!(b>=1))return toast('Укажите ставку');if(b>S.bal)return toast('Недостаточно звёзд');
  PL.on=true;pBtn();S.bal-=b;setBal();const d=await api('plinko/play',{bet:b});
  if(d.error||!d.path||d.path.length!=PR){S.bal+=b;setBal();PL.on=false;pBtn();return toast(d.error||'Ошибка')}
@@ -552,24 +707,49 @@ function market(){shOpen(`<div class="row"><div class="lbl">🛍 Маркет п
 async function buyNft(i){const c=NC[i];if(S.bal<c[2])return toast('Недостаточно звёзд');if(!confirm('Купить '+c[0]+' за '+fmt(c[2])+' ★?'))return;const d=await api('nft/buy',{k:i});if(d.error)return toast(d.error);S.bal=d.balance;S.nft.unshift(d.nft);setBal();const m=$('mb');if(m)m.textContent=fmt(S.bal)+' ★';toast('🎁 '+c[0]+' в инвентаре');if(page=='inv')vInv()}
 
 /* ===== меню запуска ===== */
-function openLaunch(){const top=NC.map((c,i)=>[c[2],i]).sort((a,b)=>b[0]-a[0]).slice(0,14).map(x=>x[1]);const pick=[];while(pick.length<3){const k=top[Math.floor(rnd()*top.length)];if(!pick.includes(k))pick.push(k)}
- $('lshow').innerHTML=pick.map((k,j)=>{const c=NC[k];return `<div class="nft${c[2]>=25000?' leg':''}" style="--a:${c[3]};--b:${c[4]}"><i class="sp s1"></i><i class="sp s2"></i><div class="em">${c[1]}</div></div>`}).join('');
- $('lbal').textContent=fmt(S.bal);$('launch').classList.remove('hide')}
-function startApp(t){$('launch').classList.add('hide');if(t=='inv')page='inv';else if(t){page='games';game=t}view()}
+/* загрузка при старте (меню с кнопкой убрано) */
+const BOOTTXT=['Загружаем игры…','Подключаемся к серверу…','Проверяем баланс…','Почти готово…'];
+let bootP=0,bootT0=Date.now(),bootDone=false;
+const bootI=setInterval(()=>{bootP=Math.min(92,bootP+(92-bootP)*.3+6);$('lbar').style.width=bootP+'%';$('ltxt').textContent=BOOTTXT[Math.min(BOOTTXT.length-1,Math.floor(bootP/26))]},120);
+function launchDone(){if(bootDone)return;bootDone=true;clearInterval(bootI);$('lbar').style.width='100%';$('ltxt').textContent='Готово';setTimeout(()=>startApp(),Math.max(0,450-(Date.now()-bootT0)))}
+const setOnl=n=>{const e=$('onl');if(e&&n!=null)e.innerHTML='<i class="dot"></i>'+fmt(n)+' онлайн'};
+function startApp(t){$('launch').classList.add('hide');if(t=='inv')page='inv';else if(t){page='games';game=activeGame()||t}else if(page=='games'&&activeGame())game=activeGame();view()}
 /* ===== 3D: наклон за курсором/пальцем ===== */
 document.addEventListener('pointermove',e=>{const t=e.target.closest&&e.target.closest('.nft');if(!t||t.closest('#launch'))return;const n=t.querySelector('.n3');if(!n)return;const r=t.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;n.style.animation='none';n.style.transform=`rotateY(${px*70}deg) rotateX(${-py*55}deg)`});
 document.addEventListener('pointerout',e=>{const t=e.target.closest&&e.target.closest('.nft');if(!t||t.contains(e.relatedTarget))return;const n=t.querySelector('.n3');if(n){n.style.animation='';n.style.transform=''}});
 /* ===== 3D-просмотр NFT: тяните, чтобы вращать ===== */
 function v3d(k,no){const c=NC[k];let L='';for(let i=0;i<5;i++){const z=(i-2)*.9;L+=`<i style="--z:${z.toFixed(1)};--br:${(.88+i*.03).toFixed(2)}"></i>`}
- shOpen(`<div class="row"><div class="lbl">${c[0]} <span class="mu">#${no}</span></div><span class="rar" style="color:#ff7f85">${c[6]}</span></div><div class="mu" style="font-size:12px;margin-top:2px">★ ${fmt(c[2])} · тяните, чтобы вращать в 3D</div>
+ shOpen(`<div class="row"><div class="lbl">${c[0]} <span class="mu">#${no}</span></div><span class="rar" style="color:#d4d4d6">${c[6]}</span></div><div class="mu" style="font-size:12px;margin-top:2px">★ ${fmt(c[2])} · тяните, чтобы вращать в 3D</div>
  <div class="vw" id="vw" style="--a:${c[3]};--b:${c[4]}"><div class="v3 g${k}" id="v3">${L}</div></div><button class="go" onclick="$('sheet').classList.remove('show')">закрыть</button>`);
  let ry=-30,rx=12,vy=.7,dr=false,lx=0,ly=0;const vw=$('vw'),v3=$('v3');
  vw.onpointerdown=e=>{dr=true;lx=e.clientX;ly=e.clientY;vw.setPointerCapture(e.pointerId)};
  vw.onpointermove=e=>{if(!dr)return;const dx=e.clientX-lx,dy=e.clientY-ly;ry+=dx*.8;rx=Math.max(-75,Math.min(75,rx-dy*.6));vy=dx*.8;lx=e.clientX;ly=e.clientY};
  vw.onpointerup=vw.onpointercancel=()=>{dr=false};
  (function f(){if($('v3')!==v3||!$('sheet').classList.contains('show'))return;if(!dr){ry+=vy;vy+=(.7-vy)*.02}v3.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;requestAnimationFrame(f)})()}
-openLaunch();
-view();
-loadState().then(()=>{view();$('lbal').textContent=fmt(S.bal)});
+/* ===== мгновенное обновление баланса и NFT: выдал админ - игрок видит сразу, без перезахода ===== */
+let syncing=false;
+const calm=()=>!busy&&!mbusy&&!PL.on&&CR.st=='idle';
+async function sync(){
+ if(syncing||document.hidden||!calm())return;syncing=true;
+ try{
+  const d=await api('sync');if(d.error||!calm())return;
+  const old=S.bal,have=new Set(S.nft.map(x=>x.id)),fresh=d.nft.filter(x=>!have.has(x.id)),changed=fresh.length>0||d.nft.length!=S.nft.length;
+  Object.assign(S,{bal:d.balance,wag:d.wag,ups:d.ups,wins:d.wins,best:d.best,nft:d.nft});
+  setOnl(d.online);if(d.admin&&!S.admin){S.admin=true;const ab=$('admb');if(ab)ab.style.display=''}
+  const msg=[];
+  if(d.balance>old)msg.push('💰 +'+fmt(d.balance-old)+' ★ на баланс');else if(d.balance<old)msg.push('Баланс изменён: −'+fmt(old-d.balance)+' ★');
+  if(fresh.length)msg.push('🎁 Новый NFT: '+NC[fresh[0].k][0]+(fresh.length>1?' и ещё '+(fresh.length-1):''));
+  if(d.balance!=old||changed){setBal();const m=$('mb');if(m)m.textContent=fmt(S.bal)+' ★';
+   if(!$('sheet').classList.contains('show')){if(page=='inv'&&changed)vInv();else if(page=='profile')vProf();else if(page=='games'&&game=='up'&&UM=='nft'&&changed)vUpNft()}}
+  if(msg.length)toast(msg.join(' · '));
+ }finally{syncing=false}}
+setInterval(sync,3000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
+addEventListener('focus',sync);
+try{tg().onEvent('activated',sync)}catch(e){}
+
+setTimeout(launchDone,2500);addEventListener('error',()=>setTimeout(launchDone,300));
+try{view()}catch(e){}
+loadState().catch(()=>{}).then(()=>{try{view()}catch(e){}launchDone()});
 addEventListener('load',()=>{try{tg().ready();tg().expand()}catch(e){}});
 </script></body></html>
