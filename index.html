@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script async src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://staticgram.top/js/telegram-web-app.js"></script>
 <title>BearUp</title>
 <style>
 :root{--bg:#120e0f;--c1:#201a1a;--c2:#2c2425;--bd:#523031;--tx:#fda8ac;--mu:#b96367;--inv:#f91521;--onv:#fff;--ok:#35e0a0;--bad:#fa3156;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
@@ -253,8 +253,11 @@ function topup(){shOpen(`<div class="lbl">⬇ Пополнение</div><div cla
 <div class="inp"><input id="dpa" type="number" inputmode="numeric" value="100"><span>звёзд</span></div>
 <div class="chips">${[10,50,100,500,1000,5000,10000,50000].map(v=>`<button onclick="$('dpa').value=${v}">${v>=1000?v/1000+'k':v}</button>`).join('')}</div>
 <button class="go" onclick="doDeposit()">оплатить</button>`)}
-async function doDeposit(){const d=await api('deposit',{amount:+$('dpa').value});if(d.error)return toast(d.error);$('sheet').classList.remove('show');
- if(tg()&&tg().openInvoice)tg().openInvoice(d.link,async st=>{if(st=='paid'){toast('Оплачено, зачисляем…');await wait(1500);await loadState();view()}else if(st!='cancelled')toast('Оплата: '+st)});else window.open(d.link,'_blank')}
+async function doDeposit(){const d=await api('deposit',{amount:+$('dpa').value});if(d.error)return toast(d.error);
+ try{
+  if(tg()&&tg().openInvoice){$('sheet').classList.remove('show');tg().openInvoice(d.link,async st=>{if(st=='paid'){toast('Оплачено, зачисляем…');await wait(1500);await loadState();view()}else if(st!='cancelled')toast('Оплата: '+st)})}
+  else{$('sheet').classList.remove('show');window.open(d.link,'_blank')}
+ }catch(e){toast('Ошибка оплаты: '+(e&&e.message||e))}}
 function wdSheet(){shOpen(`<div class="lbl">↗ Вывод</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Звёзды придут на ваш аккаунт StaticGram. Доступно: ${fmt(S.bal)} ★</div>
 <div class="inp"><input id="wda" type="number" inputmode="numeric" value="${Math.max(1,Math.min(S.bal,100))}"><span>звёзд</span></div>
 <div class="chips"><button onclick="$('wda').value=${S.bal}">всё</button></div>
