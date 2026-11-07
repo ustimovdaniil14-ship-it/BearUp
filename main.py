@@ -492,10 +492,10 @@ async def api_admin_stats(r):
         pass
     return ok(
         users=await q("SELECT count(*) FROM users"),
-        debt=await q("SELECT COALESCE(SUM(balance),0) FROM users"),
+        debt=await q("SELECT COALESCE(SUM(balance),0)::bigint FROM users"),
         online=await q("SELECT count(DISTINCT user_id) FROM bets WHERE created > now() - interval '5 minutes'"),
         new24=await q("SELECT count(*) FROM users WHERE created > now() - interval '24 hours'"),
-        wag24=await q("SELECT COALESCE(SUM(amount),0) FROM bets WHERE created > now() - interval '24 hours'"),
+        wag24=await q("SELECT COALESCE(SUM(amount),0)::bigint FROM bets WHERE created > now() - interval '24 hours'"),
         pend=await q("SELECT count(*) FROM withdrawals WHERE status IN ('pending','processing')"),
         nftreq=await q("SELECT count(*) FROM nfts WHERE status='withdraw'"),
         bot=bot_bal)
