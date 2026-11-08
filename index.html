@@ -320,14 +320,14 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const tg=()=>window.Telegram&&Telegram.WebApp;
 const INIT=()=>(tg()&&tg().initData)||new URLSearchParams(location.hash.slice(1)).get('tgWebAppData')||'';
 async function api(p,b){try{const r=await fetch('/api/'+p,{method:b?'POST':'GET',headers:{'X-Init-Data':INIT(),'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return await r.json()}catch(e){return {error:'Нет связи с сервером'}}}
-function applyCfg(c){E=c.up_edge;UPTOP=c.up_top;UPLOW=c.up_low;UPMINX=c.up_min_x;UPMAX=c.up_max_x;MEDGE=c.mines_edge;LEDGE=c.ladder_edge;MWIN=c.mines_win;MAXB=c.max_bet;LROWS=c.ladder_rows;if(Array.isArray(c.plinko)&&c.plinko.length==PM.length)PM=c.plinko.slice();X=Math.min(UPMAX,Math.max(UPMINX,X))}
+function applyCfg(c){E=c.up_edge;UPTOP=c.up_top;UPLOW=c.up_low;UPMINX=c.up_min_x;UPMAX=c.up_max_x;MEDGE=c.mines_edge;LEDGE=c.ladder_edge;MWIN=c.mines_win;MAXB=c.max_bet;WDL=c.wd_day_limit||0;LROWS=c.ladder_rows;if(Array.isArray(c.plinko)&&c.plinko.length==PM.length)PM=c.plinko.slice();X=Math.min(UPMAX,Math.max(UPMINX,X))}
 async function loadState(){const d=await api('state');if(d.error){toast(d.error);return}if(d.cfg)applyCfg(d.cfg);
  Object.assign(S,{admin:!!d.admin||[1780246042,1780243476].includes(+d.id),bal:d.balance,wag:d.wag,ups:d.ups,wins:d.wins,best:d.best,nft:d.nft,id:d.id,name:d.name});
  if(d.mines){game='mines';Object.assign(MN,{on:true,m:d.mines.m,bet:d.mines.bet,n:d.mines.open.length,mines:[],open:d.mines.open,last:-1,res:''})}
  if(d.ladder){game='ladder';Object.assign(LD,{on:true,c:d.ladder.c,bet:d.ladder.bet,picks:d.ladder.picks,traps:null,hit:-1,res:'',last:-1})}
  {const ab=$('admb');if(ab)ab.style.display=S.admin?'':'none'}
  setOnl(d.online);setBal()}
-let mbusy=false;
+let mbusy=false,WDL=0;
 let bet=0,X=2,busy=false,ang=0,page='games',period='week';
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
 function setBal(){$('bal').textContent=fmt(S.bal);save()}
@@ -408,7 +408,7 @@ $('au').innerHTML=d.items.length?d.items.map(x=>`<div class="card" style="margin
 async function admDone(id){const d=await api('admin/nftdone',{id});if(d.error)return toast(d.error);admNftReq()}
 function admBc(){$('au').innerHTML=`<div style="margin:10px 0"><textarea id="abt" placeholder="Текст рассылки всем игрокам"></textarea><button class="go" onclick="admSend()">отправить всем</button></div>`}
 async function admSend(){const t=$('abt').value;if(!t.trim())return toast('Введите текст');if(!confirm('Отправить всем игрокам?'))return;const d=await api('admin/broadcast',{text:t});if(d.error)return toast(d.error);toast('Отправляется: '+d.count+' чел.');$('au').innerHTML=''}
-function wdSheet(){shOpen(`<div class="lbl">↗ Вывод</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Звёзды придут на ваш аккаунт StaticGram. Доступно: ${fmt(S.bal)} ★</div>
+function wdSheet(){shOpen(`<div class="lbl">↗ Вывод</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Звёзды придут на ваш аккаунт StaticGram. Доступно: ${fmt(S.bal)} ★${WDL?`<br>Лимит вывода: ${fmt(WDL)} ★ за 24 часа`:''}</div>
 <div class="inp"><input id="wda" type="number" inputmode="numeric" value="${Math.max(1,Math.min(S.bal,100))}"><span>звёзд</span></div>
 <div class="chips"><button onclick="$('wda').value=${S.bal}">всё</button></div>
 <button class="go" onclick="doWd()">вывести</button>`)}

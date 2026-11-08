@@ -59,6 +59,8 @@ GROW, COUNTDOWN = 0.15, 2.1          # скорость роста множит�
 LADDER_EDGE = 0.97
 LADDER_ROWS = 8                      # ступеней (клиент берёт значение отсюда)
 LADDER_MAX_WIN = int(os.environ.get("LADDER_MAX_WIN", "1000000"))
+# Лимит вывода звёзд на одного игрока за скользящие 24 часа (0 = без лимита). Меняется в Environment на Render.
+WD_DAY_LIMIT = int(os.environ.get("WD_DAY_LIMIT", "0"))
 
 # --- Плинко: множители 13 слотов (12 рядов), шанс слота считается как в биноме
 # Сейчас: шанс выиграть (x больше 1) = 27.4%, возврат игрокам (RTP) ≈ 31.5%.
@@ -75,7 +77,7 @@ def public_cfg():
     return dict(max_bet=MAX_BET, up_edge=UP_EDGE, up_top=UP_TOP_CHANCE, up_low=UP_LOW_CHANCE,
                 up_min_x=UP_MIN_X, up_max_x=UP_MAX_X,
                 mines_edge=MINES_EDGE, mines_win=MINES_WIN_CHANCE if MINES_WIN_CHANCE >= 0 else None,
-                ladder_edge=LADDER_EDGE, ladder_rows=LADDER_ROWS, plinko=PLINKO)
+                ladder_edge=LADDER_EDGE, ladder_rows=LADDER_ROWS, plinko=PLINKO, wd_day_limit=WD_DAY_LIMIT)
 
 
 NAMES = ["Мешок добычи", "Книга звёзд", "Лол Поп", "Леденец-трость", "Змеиный бокс", "Эскимо", "Плюшевый Пепе", "Сердечный медальон", "Статуя Свободы", "Ушанка", "Лоурайдер", "Фонарь", "Неко-шлем", "Швейцарские часы", "Испуганный кот", "Могучая рука", "Ключ любви", "Зимний кот", "Кепка Дурова", "Готик-мишка", "UFC-бокс", "Вечная роза", "Дымный рог", "Астральный осколок", "Кукла вуду", "Настольный календарь", "Ракета", "Колокольчики", "Печатка", "Плюшевый медведь", "Рюкзак", "С Днём рождения", "Винтажная сигара", "Хоккейная маска", "Клевер удачи", "Тёмные очки", "Снуп Догг", "Сумка Биркин", "Цветок-череп", "Кошки-сердце", "Злой глаз", "Кольцо с бриллиантом", "Тыква-джек", "Оскар", "Слива", "Зайка-маффин", "Золотая рука", "Браслет-гвоздь", "Шутовской колпак", "Весёлый шимпанзе", "Чапл", "Шляпа ведьмы", "Медаль"]
@@ -322,6 +324,13 @@ async def api_withdraw(r):
     if amount < 1:
         raise Err("Неверная сумма")
     async with pool.acquire() as c, c.transaction():
+        if WD_DAY_LIMIT > 0:
+            await c.execute("SELECT 1 FROM users WHERE id=$1 FOR UPDATE", uid)  # параллельные запросы не обойдут лимит
+            used = await c.fetchval(
+                "SELECT COALESCE(SUM(amount),0)::bigint FROM withdrawals WHERE user_id=$1 "
+                "AND created > now() - interval '24 hours' AND status IN ('processing','pending','done')", uid)
+            if used + amount > WD_DAY_LIMIT:
+                raise Err(f"Лимит вывода {WD_DAY_LIMIT} ⭐ за 24 часа. Сейчас доступно: {max(0, WD_DAY_LIMIT - used)} ⭐")
         new = await c.fetchval("UPDATE users SET balance=balance-$2 WHERE id=$1 AND balance>=$2 "
                                "RETURNING balance", uid, amount)
         if new is None:
