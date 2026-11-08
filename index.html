@@ -488,9 +488,20 @@ function vInv(){
  $('view').innerHTML=`<div class="row" style="margin:14px 0 8px"><h2 style="margin:0">🎒 Инвентарь</h2><span style="display:flex;gap:6px"><button class="sm" onclick="market()">🛍 Маркет</button><button class="sm" onclick="depNft()">＋ NFT</button></span></div>`+
  (S.nft.length?`<div class="ng">${S.nft.map(card).join('')}</div>`:`<div class="empty">🎁<br>Пусто. Купите NFT на маркете или пополните через «＋ NFT».</div>`)}
 function shOpen(h){$('sh').innerHTML=h;$('sheet').classList.add('show')}
-function depNft(){shOpen(`<div class="lbl">🎁 Пополнение NFT-подарком</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Автоприём NFT пока недоступен. Отправьте NFT-подарок <b>@PavelManager</b> или <b>@Huevo</b> и напишите им свой ID: подарок зачислят в инвентарь.</div>
-<div class="prize" style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div class="mu" style="font-size:11px;letter-spacing:.12em">ВАШ ID</div><div class="lbl">${S.id}</div></div><button class="sm" onclick="navigator.clipboard&&navigator.clipboard.writeText('${S.id}').then(()=>toast('Скопировано'),()=>toast('${S.id}'))">Копировать</button></div>
-<div class="mu" style="font-size:12px;line-height:1.4;margin:4px 2px 10px">Принимаются только NFT (улучшенные) подарки. Вывести NFT обратно или продать его за ★ можно в инвентаре.</div>
+const RELAY='Onewinrelay',RELAY_URL='https://staticgram.top/'+RELAY;
+function copyId(quiet){const id=String(S.id);if(!S.id||id==='—'){toast('ID ещё не загрузился, подождите секунду');return false}
+ try{navigator.clipboard.writeText(id).then(()=>{if(!quiet)toast('ID скопирован')},()=>toast('Ваш ID: '+id))}catch(e){toast('Ваш ID: '+id)}return true}
+function openRelay(){if(copyId(true))toast('ID скопирован. Вставьте его в чат с релеем');
+ try{if(tg()&&tg().openTelegramLink){tg().openTelegramLink(RELAY_URL);return}}catch(e){}
+ try{if(tg()&&tg().openLink){tg().openLink(RELAY_URL);return}}catch(e){}
+ window.open(RELAY_URL,'_blank')}
+function depNft(){shOpen(`<div class="lbl">🎁 Пополнение NFT-подарком</div><div class="mu" style="font-size:13px;margin:6px 0 12px;line-height:1.4">Подарок зачисляет релей <b>@${RELAY}</b> вручную: он увидит ваш ID и добавит NFT в инвентарь.</div>
+<div class="prize" style="font-size:14px"><b>1.</b> Нажмите «Открыть профиль релея» ниже: ваш ID скопируется сам.</div>
+<div class="prize" style="font-size:14px"><b>2.</b> В профиле <b>@${RELAY}</b> отправьте ему свой NFT-подарок.</div>
+<div class="prize" style="font-size:14px"><b>3.</b> Напишите релею свой ID (вставьте скопированный) и дождитесь зачисления.</div>
+<div class="prize" style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div class="mu" style="font-size:11px;letter-spacing:.12em">ВАШ ID</div><div class="lbl">${S.id}</div></div><button class="sm" onclick="copyId()">Копировать</button></div>
+<button class="go" onclick="openRelay()">👤 Открыть профиль релея<small>@${RELAY}</small></button>
+<div class="mu" style="font-size:12px;line-height:1.4;margin:10px 2px">Принимаются только NFT (улучшенные) подарки. Вывести NFT обратно или продать его за ★ можно в инвентаре.</div>
 <div class="two"><button onclick="$('sheet').classList.remove('show');page='inv';view()">🎒 Инвентарь</button><button onclick="$('sheet').classList.remove('show')">закрыть</button></div>`)}
 async function nftSell(i){const n=S.nft[i];if(!n)return;const d=await api('nft/sell',{id:n.id});if(d.error)return toast(d.error);S.nft.splice(i,1);S.bal=d.balance;setBal();toast('Продано за '+fmt(NC[n.k][2])+' ★');vInv()}
 async function nftWd(i){const n=S.nft[i];if(!n)return;const c=NC[n.k];if(!confirm('Вывести '+c[0]+' #'+n.n+'? Админ переведёт его вручную.'))return;const d=await api('nft/withdraw',{id:n.id});if(d.error)return toast(d.error);S.nft.splice(i,1);toast('📨 Заявка отправлена админу');vInv()}
